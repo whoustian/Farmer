@@ -9,7 +9,7 @@
 
     <Grid Background="#FF490303">
         <Button x:Name="button" Content="Farm" HorizontalAlignment="Left" Margin="331,334,0,0" VerticalAlignment="Top" Width="136" Height="55" Click="button_Click"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="137" Margin="56,179,0,0" TextWrapping="Wrap" Text="{Binding ArtistNames}" VerticalAlignment="Top" Width="688" TextChanged="textBox_TextChanged"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="137" Margin="52,179,0,0" TextWrapping="Wrap" Text="{Binding ArtistNames}" VerticalAlignment="Top" Width="688" TextChanged="textBox_TextChanged"/>
 
     </Grid>
 </Window>
