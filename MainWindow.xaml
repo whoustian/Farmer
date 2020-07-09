@@ -1,0 +1,15 @@
+﻿<Window x:Class="ClickFarm.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClickFarm"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid Background="#FF490303">
+        <Button x:Name="button" Content="Farm" HorizontalAlignment="Left" Margin="331,334,0,0" VerticalAlignment="Top" Width="136" Height="55" Click="button_Click"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="137" Margin="56,179,0,0" TextWrapping="Wrap" Text="{Binding ArtistNames}" VerticalAlignment="Top" Width="688" TextChanged="textBox_TextChanged"/>
+
+    </Grid>
+</Window>

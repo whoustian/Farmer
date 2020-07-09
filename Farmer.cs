@@ -1,0 +1,85 @@
+﻿using Farmer;
+using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ClickFarm
+{
+    class Farmer
+    {
+
+        public static IWebDriver driver;
+
+
+        public static void Farm(string artists)
+        {
+            Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
+
+            foreach (var chromeDriverProcess in chromeDriverProcesses)
+            {
+                chromeDriverProcess.Kill();
+            }
+
+            List<string> artistNames = artists.Split('\n').ToList();
+
+            string exePath = ".\\chromedriver.exe";
+
+            ExtractResource(exePath);
+
+            driver = SeleniumWebDriver.SetUpChromeDriver();
+
+            driver.Navigate().GoToUrl("https://open.spotify.com/");
+
+            ObjectRepo.spotify_LogIn.click(driver);
+
+            string username = "whoustian@gmail.com";
+            string password = "Zdvnk.888";
+
+            ObjectRepo.spotify_UserNameBox.waitForVisible(driver, 30);
+            ObjectRepo.spotify_UserNameBox.SetValue(driver, username);
+            ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
+            ObjectRepo.spotify_LogInButton.click(driver);
+
+            foreach (string artist in artistNames)
+            {
+                ObjectRepo.spotify_Search.waitForVisible(driver, 30);
+                ObjectRepo.spotify_Search.click(driver);
+                ObjectRepo.spotify_SearchBar.SetValue(driver, artist);
+                PageObject artistPage = ObjectRepo.getArtistObject(artist);
+                artistPage.waitForVisible(driver, 30);
+                artistPage.click(driver);
+
+                int i = 0;
+
+                while (i < 100000)
+                {
+                    for (int j = 1; j <= 5; j++)
+                    {
+                        PageObject track = new PageObject(By.XPath("(//*[@loading='lazy'])[" + j + "]"));
+                        track.waitForVisible(driver, 10);
+                        track.click(driver);
+                        Thread.Sleep(5000);
+                    }
+                }
+            }
+
+        }
+
+        private static void ExtractResource(string path)
+        {
+            try
+            {
+                byte[] bytes = Properties.Resources.chromedriver;
+                File.WriteAllBytes(path, bytes);
+            }
+            catch { }
+        }
+
+    }
+}
