@@ -17,7 +17,35 @@ namespace ClickFarm
         public static IWebDriver driver;
 
 
-        public static void Farm(string artists)
+        public static void FarmSoundCloud(string artists)
+        {
+            Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
+
+            foreach (var chromeDriverProcess in chromeDriverProcesses)
+            {
+                chromeDriverProcess.Kill();
+            }
+
+            List<string> artistNames = artists.Split('\n').ToList();
+
+            string exePath = ".\\chromedriver.exe";
+
+            ExtractResource(exePath);
+
+            driver = SeleniumWebDriver.SetUpChromeDriver();
+
+            driver.Navigate().GoToUrl("https://www.soundcloud.com");
+
+            foreach (string artist in artistNames)
+            {
+
+            }
+
+
+        }
+
+
+        public static void FarmSpotify(string artists)
         {
             Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
 

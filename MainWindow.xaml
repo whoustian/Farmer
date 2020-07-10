@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickFarm"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Farmer" Height="450" Width="800" ResizeMode="CanMinimize">
 
     <Grid Background="#FF490303">
         <Button x:Name="button" Content="Farm" HorizontalAlignment="Left" Margin="331,334,0,0" VerticalAlignment="Top" Width="136" Height="55" Click="button_Click"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="137" Margin="52,179,0,0" TextWrapping="Wrap" Text="{Binding ArtistNames}" VerticalAlignment="Top" Width="688" TextChanged="textBox_TextChanged"/>
+        <Image x:Name="image" Source="farmer.png" HorizontalAlignment="Left" Height="132" Margin="616,24,0,0" VerticalAlignment="Top" Width="140"/>
+        <Label x:Name="Title" Content="Another day on the farm!" HorizontalAlignment="Left" Margin="183,24,0,0" VerticalAlignment="Top" Height="64" Width="433" FontSize="36" Background="#00000000" Foreground="White"/>
+        <Label x:Name="label" Content="Enter artist names below" HorizontalAlignment="Left" Margin="52,142,0,0" VerticalAlignment="Top" Width="208" Foreground="White" FontSize="16"/>
 
     </Grid>
 </Window>

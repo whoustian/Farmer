@@ -36,7 +36,8 @@ namespace ClickFarm
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            Farmer.Farm(ArtistNames);
+            //Farmer.FarmSpotify(ArtistNames);
+            Farmer.FarmSoundCloud(ArtistNames);
         }
     }
 }
