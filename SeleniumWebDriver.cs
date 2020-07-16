@@ -20,7 +20,7 @@ namespace Farmer
                 chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddArgument("--start-maximized");
-                //chromeOptions.AddArgument("mute-audio");
+                chromeOptions.AddArgument("mute-audio");
                 //chromeOptions.BinaryLocation = @"C:\Users\Will\source\repos\ClickFarm\chrome-win\chrome.exe";
                 return new ChromeDriver(service, chromeOptions);
             }

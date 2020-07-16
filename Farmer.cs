@@ -61,12 +61,14 @@ namespace ClickFarm
                     int i = 1;
                     while (i < 1000)
                     {
+                        Thread.Sleep(3000);
                         ObjectRepo.soundcloud_PlayButton.click(driver);
                         int randomWaitTime = new Random().Next(1000, 10000);
                         Thread.Sleep(randomWaitTime);
                         driver.Navigate().Refresh();
                         ObjectRepo.soundcloud_PlayButton.waitForVisible(driver, 10);
                         i++;
+                        Console.WriteLine("Count: " + i);
                     }
                 }
             }
