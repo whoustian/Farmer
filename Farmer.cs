@@ -16,9 +16,13 @@ namespace ClickFarm
 
         public static IWebDriver driver;
 
+        public static bool isRunning = false;
 
-        public static void FarmSoundCloud(string artists)
+
+        public static void FarmSoundCloud(string songsOrArtists)
         {
+            isRunning = true;
+
             Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
 
             foreach (var chromeDriverProcess in chromeDriverProcesses)
@@ -26,7 +30,7 @@ namespace ClickFarm
                 chromeDriverProcess.Kill();
             }
 
-            List<string> artistNames = artists.Split('\n').ToList();
+            List<string> songsOrArtistsList = songsOrArtists.Split('\n').ToList();
 
             string exePath = ".\\chromedriver.exe";
 
@@ -34,19 +38,47 @@ namespace ClickFarm
 
             driver = SeleniumWebDriver.SetUpChromeDriver();
 
-            driver.Navigate().GoToUrl("https://www.soundcloud.com");
+            bool byArtist = false;
+            bool bySong = true;
 
-            foreach (string artist in artistNames)
+            if (byArtist)
             {
+                driver.Navigate().GoToUrl("https://www.soundcloud.com");
 
+                foreach (string artist in songsOrArtistsList)
+                {
+                    ObjectRepo.soundcloud_SearchBar.SetValue(driver, artist);
+                    ObjectRepo.soundcloud_SearchButton.click(driver);
+                }
             }
 
+            if (bySong)
+            {
+                foreach (string song in songsOrArtistsList)
+                {
+                    driver.Navigate().GoToUrl(song);
+                    ObjectRepo.soundcloud_PlayButton.waitForVisible(driver, 10);
+                    int i = 1;
+                    while (i < 1000)
+                    {
+                        ObjectRepo.soundcloud_PlayButton.click(driver);
+                        int randomWaitTime = new Random().Next(1000, 10000);
+                        Thread.Sleep(randomWaitTime);
+                        driver.Navigate().Refresh();
+                        ObjectRepo.soundcloud_PlayButton.waitForVisible(driver, 10);
+                        i++;
+                    }
+                }
+            }
 
+            isRunning = false;
         }
 
 
         public static void FarmSpotify(string artists)
         {
+            isRunning = true;
+
             Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
 
             foreach (var chromeDriverProcess in chromeDriverProcesses)
@@ -97,6 +129,7 @@ namespace ClickFarm
                 }
             }
 
+            isRunning = false;
         }
 
         private static void ExtractResource(string path)

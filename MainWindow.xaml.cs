@@ -34,10 +34,25 @@ namespace ClickFarm
 
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private async void button_Click(object sender, RoutedEventArgs e)
         {
             //Farmer.FarmSpotify(ArtistNames);
-            Farmer.FarmSoundCloud(ArtistNames);
+            try
+            {
+                if (Farmer.isRunning.Equals(false))
+                {
+                    await Task.Run(() => { Farmer.FarmSoundCloud(ArtistNames); });
+                }
+                else
+                {
+                    MessageBox.Show("Downloader already running.", "Error Message");
+                }
+
+            }
+            catch
+            {
+                Farmer.isRunning = false;
+            }
         }
     }
 }

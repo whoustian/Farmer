@@ -18,6 +18,10 @@ namespace ClickFarm
         public static PageObject spotify_Search = new PageObject(By.XPath("//*[text()='Search']"));
         public static PageObject spotify_SearchBar = new PageObject(By.XPath("//*[@data-testid='search-input']"));
 
+        public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
+        public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));
+        public static PageObject soundcloud_PlayButton = new PageObject(By.XPath("(//*[@title='Play'])[1]"));
+
         public static PageObject getArtistObject(string artist)
         {
             return new PageObject(By.XPath("(//*[@title='" + artist + "'])[1]"));
