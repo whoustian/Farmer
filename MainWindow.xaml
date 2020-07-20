@@ -11,8 +11,10 @@
         <Button x:Name="button" Content="Farm" HorizontalAlignment="Left" Margin="331,334,0,0" VerticalAlignment="Top" Width="136" Height="55" Click="button_Click"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="137" Margin="52,179,0,0" TextWrapping="Wrap" Text="{Binding ArtistNames}" VerticalAlignment="Top" Width="688" TextChanged="textBox_TextChanged"/>
         <Image x:Name="image" Source="farmer.png" HorizontalAlignment="Left" Height="132" Margin="616,24,0,0" VerticalAlignment="Top" Width="140"/>
-        <Label x:Name="Title" Content="Another day on the farm!" HorizontalAlignment="Left" Margin="183,24,0,0" VerticalAlignment="Top" Height="64" Width="433" FontSize="36" Background="#00000000" Foreground="White"/>
+        <Label x:Name="Title" Content="Another day on the farm!" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Height="64" Width="433" FontSize="36" Background="#00000000" Foreground="White"/>
         <Label x:Name="label" Content="Enter artist names or song links below" HorizontalAlignment="Left" Margin="52,142,0,0" VerticalAlignment="Top" Width="399" Foreground="White" FontSize="16"/>
+        <RadioButton x:Name="radioButton" Content="SoundCloud" HorizontalAlignment="Left" Margin="52,123,0,0" VerticalAlignment="Top" Checked="radioButton_Checked" Height="30" Width="114" Foreground="White"/>
+        <RadioButton x:Name="radioButton1" Content="Spotify" HorizontalAlignment="Left" Margin="150,123,0,0" VerticalAlignment="Top" Checked="radioButton1_Checked" Foreground="White" Height="30" Width="102"/>
 
     </Grid>
 </Window>

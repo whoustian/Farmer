@@ -23,6 +23,10 @@ namespace ClickFarm
 
         public string ArtistNames { get; set; }
 
+        public bool SpotifyFarm { get; set; }
+
+        public bool SoundCloudFarm { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,22 +41,56 @@ namespace ClickFarm
         private async void button_Click(object sender, RoutedEventArgs e)
         {
             //Farmer.FarmSpotify(ArtistNames);
-            try
+            if (SoundCloudFarm)
             {
-                if (Farmer.isRunning.Equals(false))
+                try
                 {
-                    await Task.Run(() => { Farmer.FarmSoundCloud(ArtistNames); });
-                }
-                else
-                {
-                    MessageBox.Show("Downloader already running.", "Error Message");
-                }
+                    if (Farmer.isRunning.Equals(false))
+                    {
+                        await Task.Run(() => { Farmer.FarmSoundCloud(ArtistNames); });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Farmer already running.", "Error Message");
+                    }
 
+                }
+                catch
+                {
+                    Farmer.isRunning = false;
+                }
             }
-            catch
+            else if (SpotifyFarm)
             {
-                Farmer.isRunning = false;
+                try
+                {
+                    if (Farmer.isRunning.Equals(false))
+                    {
+                        await Task.Run(() => { Farmer.FarmSpotify(ArtistNames); });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Farmer already running.", "Error Message");
+                    }
+
+                }
+                catch
+                {
+                    Farmer.isRunning = false;
+                }
             }
+        }
+
+        private void radioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            SoundCloudFarm = true;
+            SpotifyFarm = false;
+        }
+
+        private void radioButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            SoundCloudFarm = false;
+            SpotifyFarm = true;
         }
     }
 }

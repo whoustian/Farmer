@@ -38,29 +38,18 @@ namespace ClickFarm
 
             driver = SeleniumWebDriver.SetUpChromeDriver();
 
-            bool byArtist = false;
-            bool bySong = true;
-
-            if (byArtist)
+            foreach (string item in songsOrArtistsList)
             {
-                driver.Navigate().GoToUrl("https://www.soundcloud.com");
+                bool isSongLink = item.StartsWith("http");
 
-                foreach (string artist in songsOrArtistsList)
+                if (isSongLink)
                 {
-                    ObjectRepo.soundcloud_SearchBar.SetValue(driver, artist);
-                    ObjectRepo.soundcloud_SearchButton.click(driver);
-                }
-            }
-
-            if (bySong)
-            {
-                foreach (string song in songsOrArtistsList)
-                {
-                    driver.Navigate().GoToUrl(song);
+                    driver.Navigate().GoToUrl(item);
                     ObjectRepo.soundcloud_PlayButton.waitForVisible(driver, 10);
                     int i = 1;
                     while (i < 1000)
                     {
+                        Console.WriteLine("Count: " + i);
                         Thread.Sleep(3000);
                         ObjectRepo.soundcloud_PlayButton.click(driver);
                         int randomWaitTime = new Random().Next(1000, 10000);
@@ -68,7 +57,16 @@ namespace ClickFarm
                         driver.Navigate().Refresh();
                         ObjectRepo.soundcloud_PlayButton.waitForVisible(driver, 10);
                         i++;
-                        Console.WriteLine("Count: " + i);
+                    }
+                }
+                else
+                {
+                    driver.Navigate().GoToUrl("https://www.soundcloud.com");
+
+                    foreach (string artist in songsOrArtistsList)
+                    {
+                        ObjectRepo.soundcloud_SearchBar.SetValue(driver, artist);
+                        ObjectRepo.soundcloud_SearchButton.click(driver);
                     }
                 }
             }
