@@ -62,5 +62,14 @@ namespace Farmer
             }
         }
 
+        public void scrollTo(IWebDriver driver)
+        {
+            IWebElement element = driver.FindElement(locator);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", element);
+        }
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Farmer;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,6 +87,8 @@ namespace ClickFarm
                 chromeDriverProcess.Kill();
             }
 
+            artists = File.ReadAllText(".\\artist.txt");
+
             List<string> artistNames = artists.Split('\n').ToList();
 
             string exePath = ".\\chromedriver.exe";
@@ -98,8 +101,8 @@ namespace ClickFarm
 
             ObjectRepo.spotify_LogIn.click(driver);
 
-            string username = "whoustian@gmail.com";
-            string password = "Zdvnk.888";
+            string username = File.ReadAllText(".\\username.txt");
+            string password = "Penis911!";
 
             ObjectRepo.spotify_UserNameBox.waitForVisible(driver, 30);
             ObjectRepo.spotify_UserNameBox.SetValue(driver, username);
@@ -115,21 +118,43 @@ namespace ClickFarm
                 artistPage.waitForVisible(driver, 30);
                 artistPage.click(driver);
 
+                if (ObjectRepo.spotify_shuffleButton.isVisible(driver))
+                {
+                    ObjectRepo.spotify_shuffleButton.click(driver);
+                }
+
                 int i = 0;
 
                 while (i < 100000)
                 {
-                    for (int j = 1; j <= 5; j++)
+                    ObjectRepo.spotify_nextButton.scrollTo(driver);
+                    int randomWaitTime = new Random().Next(35, 60);
+                    Console.WriteLine("Playing for " + randomWaitTime + " seconds");
+                    //Thread.Sleep(randomWaitTime * 1000);
+                    Thread.Sleep(500);
+                    if (ObjectRepo.spotify_playButton.isVisible(driver))
                     {
-                        PageObject track = new PageObject(By.XPath("(//*[@loading='lazy'])[" + j + "]"));
-                        track.waitForVisible(driver, 10);
-                        track.click(driver);
-                        Thread.Sleep(5000);
+                        ObjectRepo.spotify_playButton.click(driver);
                     }
+                    Thread.Sleep(500);
+                    ObjectRepo.spotify_nextButton.click(driver);
+                    Thread.Sleep(500);
                 }
             }
 
             isRunning = false;
+        }
+
+        public static void cycleTop5()
+        {
+            for (int j = 1; j <= 5; j++)
+            {
+                PageObject track = new PageObject(By.XPath("(//*[@loading='lazy'])[" + j + "]"));
+                track.waitForVisible(driver, 10);
+                track.click(driver);
+                int randomWaitTime = new Random().Next(35000, 60000);
+                Thread.Sleep(randomWaitTime);
+            }
         }
 
         private static void ExtractResource(string path)

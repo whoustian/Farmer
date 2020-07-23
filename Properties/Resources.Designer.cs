@@ -69,5 +69,14 @@ namespace ClickFarm.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to whoustian@gmail.com.
+        /// </summary>
+        internal static string username {
+            get {
+                return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
     }
 }

@@ -107,5 +107,8 @@
   <ItemGroup>
     <Resource Include="farmer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\username.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

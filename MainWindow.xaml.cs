@@ -41,27 +41,27 @@ namespace ClickFarm
         private async void button_Click(object sender, RoutedEventArgs e)
         {
             //Farmer.FarmSpotify(ArtistNames);
-            if (SoundCloudFarm)
-            {
-                try
-                {
-                    if (Farmer.isRunning.Equals(false))
-                    {
-                        await Task.Run(() => { Farmer.FarmSoundCloud(ArtistNames); });
-                    }
-                    else
-                    {
-                        MessageBox.Show("Farmer already running.", "Error Message");
-                    }
+            //if (SoundCloudFarm)
+            //{
+            //    try
+            //    {
+            //        if (Farmer.isRunning.Equals(false))
+            //        {
+            //            await Task.Run(() => { Farmer.FarmSoundCloud(ArtistNames); });
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Farmer already running.", "Error Message");
+            //        }
 
-                }
-                catch
-                {
-                    Farmer.isRunning = false;
-                }
-            }
-            else if (SpotifyFarm)
-            {
+            //    }
+            //    catch
+            //    {
+            //        Farmer.isRunning = false;
+            //    }
+            //}
+            //else if (SpotifyFarm)
+            //{
                 try
                 {
                     if (Farmer.isRunning.Equals(false))
@@ -78,7 +78,7 @@ namespace ClickFarm
                 {
                     Farmer.isRunning = false;
                 }
-            }
+            //}
         }
 
         private void radioButton_Checked(object sender, RoutedEventArgs e)

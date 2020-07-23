@@ -17,6 +17,11 @@ namespace ClickFarm
         public static PageObject spotify_LogInButton = new PageObject(By.XPath("//*[@id='login-button']"));
         public static PageObject spotify_Search = new PageObject(By.XPath("//*[text()='Search']"));
         public static PageObject spotify_SearchBar = new PageObject(By.XPath("//*[@data-testid='search-input']"));
+        public static PageObject spotify_nextButton = new PageObject(By.XPath("(//*[@class='control-button spoticon-skip-forward-16'])[1]"));
+        public static PageObject spotify_playButton = new PageObject(By.XPath("(//*[@class='control-button spoticon-play-16 control-button--circled'])[1]"));
+        public static PageObject spotify_pauseButton = new PageObject(By.XPath("(//*[@class='control-button spoticon-pause-16 control-button--circled])[1]"));
+        public static PageObject spotify_shuffleButton = new PageObject(By.XPath("(//*[@class='control-button spoticon-shuffle-16'])[1]"));
+        public static PageObject spotify_unShuffleButton = new PageObject(By.XPath("(//*[@class='control-button spoticon-shuffle-16 control-button--active'])[1]"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));
