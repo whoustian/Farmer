@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>farmer_F0X_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -109,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\username.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="farmer_F0X_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\artist.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

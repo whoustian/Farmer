@@ -109,6 +109,17 @@ namespace ClickFarm
             ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
             ObjectRepo.spotify_LogInButton.click(driver);
 
+            Thread.Sleep(500);
+
+            if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
+            {
+                string path = ".\\BadUser.txt";
+                File.AppendAllLines(path, new[] { "bad user: " + username });
+                Thread.Sleep(5000);
+                driver.Close();
+                Process.GetCurrentProcess().Kill();
+            }
+
             foreach (string artist in artistNames)
             {
                 ObjectRepo.spotify_Search.waitForVisible(driver, 30);
@@ -129,14 +140,12 @@ namespace ClickFarm
                 {
                     ObjectRepo.spotify_nextButton.scrollTo(driver);
                     int randomWaitTime = new Random().Next(35, 60);
-                    Console.WriteLine("Playing for " + randomWaitTime + " seconds");
-                    //Thread.Sleep(randomWaitTime * 1000);
-                    Thread.Sleep(500);
                     if (ObjectRepo.spotify_playButton.isVisible(driver))
                     {
                         ObjectRepo.spotify_playButton.click(driver);
                     }
-                    Thread.Sleep(500);
+                    Console.WriteLine("Playing for " + randomWaitTime + " seconds");
+                    Thread.Sleep(randomWaitTime * 1000);
                     ObjectRepo.spotify_nextButton.click(driver);
                     Thread.Sleep(500);
                 }

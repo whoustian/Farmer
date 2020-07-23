@@ -31,6 +31,22 @@ namespace ClickFarm
         {
             InitializeComponent();
             DataContext = this;
+            try
+            {
+                if (Farmer.isRunning.Equals(false))
+                {
+                    Task.Run(() => { Farmer.FarmSpotify(ArtistNames); });
+                }
+                else
+                {
+                    MessageBox.Show("Farmer already running.", "Error Message");
+                }
+
+            }
+            catch
+            {
+                Farmer.isRunning = false;
+            }
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
