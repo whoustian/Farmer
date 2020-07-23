@@ -117,7 +117,7 @@
     <Resource Include="farmer_F0X_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\artist.txt" />
+    <None Include="bin\Debug\media.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

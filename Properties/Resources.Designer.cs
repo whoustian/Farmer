@@ -61,15 +61,6 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ujuu.
-        /// </summary>
-        internal static string artist {
-            get {
-                return ResourceManager.GetString("artist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] chromedriver {
@@ -80,7 +71,16 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nhzfyfiuxuqimbvkwk@ttirv.com.
+        ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/5lXc0CFCjgIq0A2dqe9SPo.
+        /// </summary>
+        internal static string media {
+            get {
+                return ResourceManager.GetString("media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to whoustian@gmail.com.
         /// </summary>
         internal static string username {
             get {
