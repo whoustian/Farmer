@@ -26,6 +26,7 @@ namespace ClickFarm
         public static PageObject spotify_PlaylistPlay = new PageObject(By.XPath("(//*[@aria-label='Play'])[2]"));
         public static PageObject spotify_EnableRepeatOne = new PageObject(By.XPath("(//*[@title='Enable repeat one'])[1]"));
         public static PageObject spotify_EnableRepeat = new PageObject(By.XPath("(//*[@title='Enable repeat'])[1]"));
+        public static PageObject spotify_SongPlayTime = new PageObject(By.XPath("(//*[@class='playback-bar__progress-time e80fc2e59729be32410c909c47ef87a3-scss'])[2]"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));

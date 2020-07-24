@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Opera;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,26 @@ namespace Farmer
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "ChromeDriver Error");
+                return null;
+            }
+        }
+
+        public static OperaDriver SetUpOperaDriver() {
+            try
+            {
+                var operaOptions = new OperaOptions();
+                OperaDriverService service = OperaDriverService.CreateDefaultService();
+                service.HideCommandPromptWindow = true;
+                //operaOptions.AddUserProfilePreference("download.prompt_for_download", false);
+                //operaOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+                operaOptions.AddArgument("--start-maximized");
+                operaOptions.AddArgument("mute-audio");
+                //chromeOptions.BinaryLocation = @"C:\Users\Will\source\repos\ClickFarm\chrome-win\chrome.exe";
+                return new OperaDriver(service, operaOptions);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "OperaDriver Error");
                 return null;
             }
         }

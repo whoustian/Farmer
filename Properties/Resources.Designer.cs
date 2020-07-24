@@ -71,7 +71,7 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/5lXc0CFCjgIq0A2dqe9SPo.
+        ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5.
         /// </summary>
         internal static string media {
             get {
@@ -80,7 +80,17 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to whoustian@gmail.com.
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] operadriver {
+            get {
+                object obj = ResourceManager.GetObject("operadriver", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to wdwnuyjxsiuyhscwtb@ttirv.com.
         /// </summary>
         internal static string username {
             get {

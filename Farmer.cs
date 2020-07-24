@@ -22,6 +22,7 @@ namespace ClickFarm
         public static void FarmSoundCloud(string songsOrArtists)
         {
             isRunning = true;
+            bool useOpera = false;
 
             Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
 
@@ -34,7 +35,7 @@ namespace ClickFarm
 
             string exePath = ".\\chromedriver.exe";
 
-            ExtractResource(exePath);
+            ExtractResource(exePath, useOpera);
 
             driver = SeleniumWebDriver.SetUpChromeDriver();
 
@@ -78,30 +79,59 @@ namespace ClickFarm
         public static void FarmSpotify(string media)
         {
             isRunning = true;
+            bool useOpera = true;
+            string exePath;
 
-            Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
-
-            foreach (var chromeDriverProcess in chromeDriverProcesses)
+            if (useOpera)
             {
-                chromeDriverProcess.Kill();
+                Process[] operaDriverProcesses = Process.GetProcessesByName("operadriver");
+
+                foreach (var operaDriverProcess in operaDriverProcesses)
+                {
+                    operaDriverProcess.Kill();
+                }
             }
+            else
+            {
+                Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
+
+                foreach (var chromeDriverProcess in chromeDriverProcesses)
+                {
+                    chromeDriverProcess.Kill();
+                }
+            }
+
 
             media = File.ReadAllText(".\\media.txt");
 
             List<string> mediaList = media.Split('\n').ToList();
 
-            string exePath = ".\\chromedriver.exe";
+            if (useOpera)
+            {
+                exePath = ".\\operadriver.exe";
+            }
+            else
+            {
+                exePath = ".\\chromedriver.exe";
+            }
 
-            ExtractResource(exePath);
+            ExtractResource(exePath, useOpera);
 
-            driver = SeleniumWebDriver.SetUpChromeDriver();
+            if (useOpera)
+            {
+                driver = SeleniumWebDriver.SetUpOperaDriver();
+            }
+            else
+            {
+                driver = SeleniumWebDriver.SetUpChromeDriver();
+            }
 
             driver.Navigate().GoToUrl("https://open.spotify.com/");
 
             ObjectRepo.spotify_LogIn.click(driver);
 
             string username = File.ReadAllText(".\\username.txt");
-            string password = "Zdvnk.888";
+            string password = "Penis911!";
 
             ObjectRepo.spotify_UserNameBox.waitForVisible(driver, 30);
             ObjectRepo.spotify_UserNameBox.SetValue(driver, username);
@@ -121,39 +151,63 @@ namespace ClickFarm
 
             foreach (string currentMedia in mediaList)
             {
+
+                // Play playlist on repeat
                 if (currentMedia.StartsWith("playlist"))
                 {
                     string url = currentMedia.Substring(9);
                     driver.Navigate().GoToUrl(url);
+
+                    ObjectRepo.spotify_PlaylistPlay.waitForVisible(driver, 20);
 
                     if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
                     {
                         ObjectRepo.spotify_EnableRepeat.click(driver);
                     }
 
-                    int i = 0;
-
-                    while (i < 100000)
+                    while (true)
                     {
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
-                        int randomWaitTime = new Random().Next(35, 60);
+
                         if (ObjectRepo.spotify_playButton.isVisible(driver))
                         {
                             ObjectRepo.spotify_playButton.click(driver);
                         }
-                        Console.WriteLine("Playing for " + randomWaitTime + " seconds");
-                        Thread.Sleep(randomWaitTime * 1000);
-                        ObjectRepo.spotify_nextButton.click(driver);
+
+                        int playWholeSongRandom = new Random().Next(1, 10);
+                        int randomWaitTime = new Random().Next(35, 60);
+
+                        if (playWholeSongRandom == 7)
+                        {
+                            Console.WriteLine("Playing whole song");
+                            string playtime = ObjectRepo.spotify_SongPlayTime.getText(driver);
+                            int minutes = Int32.Parse(playtime.Split(':')[0]);
+                            int seconds = Int32.Parse(playtime.Split(':')[1]);
+                            int waitTime = (minutes * 60) + seconds;
+                            Thread.Sleep(waitTime * 1000);
+                            ObjectRepo.spotify_nextButton.click(driver);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Playing for " + randomWaitTime + " seconds");
+                            Thread.Sleep(randomWaitTime * 1000);
+                            ObjectRepo.spotify_nextButton.click(driver);
+                        }
+
+
                         Thread.Sleep(500);
                     }
                 }
 
+                // Shuffle artist discography
                 if (currentMedia.StartsWith("artist"))
                 {
+                    string artist = currentMedia.Substring(7);
+
                     ObjectRepo.spotify_Search.waitForVisible(driver, 30);
                     ObjectRepo.spotify_Search.click(driver);
-                    ObjectRepo.spotify_SearchBar.SetValue(driver, currentMedia);
-                    PageObject artistPage = ObjectRepo.getArtistObject(currentMedia);
+                    ObjectRepo.spotify_SearchBar.SetValue(driver, artist);
+                    PageObject artistPage = ObjectRepo.getArtistObject(artist);
                     artistPage.waitForVisible(driver, 30);
                     artistPage.click(driver);
 
@@ -162,9 +216,7 @@ namespace ClickFarm
                         ObjectRepo.spotify_shuffleButton.click(driver);
                     }
 
-                    int i = 0;
-
-                    while (i < 100000)
+                    while (true)
                     {
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
                         int randomWaitTime = new Random().Next(35, 60);
@@ -178,6 +230,13 @@ namespace ClickFarm
                         Thread.Sleep(500);
                     }
                 }
+
+                // Play song on repeat
+                if (currentMedia.StartsWith("song"))
+                {
+                    string song = currentMedia.Substring(5);
+                }
+
             }
 
             isRunning = false;
@@ -195,11 +254,19 @@ namespace ClickFarm
             }
         }
 
-        private static void ExtractResource(string path)
+        private static void ExtractResource(string path, bool useOpera)
         {
             try
             {
-                byte[] bytes = Properties.Resources.chromedriver;
+                byte[] bytes;
+                if (useOpera)
+                {
+                    bytes = Properties.Resources.operadriver;
+                }
+                else
+                {
+                    bytes = Properties.Resources.chromedriver;
+                }
                 File.WriteAllBytes(path, bytes);
             }
             catch { }
