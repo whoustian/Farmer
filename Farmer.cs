@@ -212,9 +212,9 @@ namespace ClickFarm
                             string playtime = ObjectRepo.spotify_SongPlayTime.getText(driver);
                             int minutes = Int32.Parse(playtime.Split(':')[0]);
                             int seconds = Int32.Parse(playtime.Split(':')[1]);
-                            int waitTime = (minutes * 60) + seconds;
+                            int waitTime = (minutes * 60) + seconds + 2;
                             Thread.Sleep(waitTime * 1000);
-                            ObjectRepo.spotify_nextButton.click(driver);
+                            //ObjectRepo.spotify_nextButton.click(driver);
                         }
                         else
                         {
