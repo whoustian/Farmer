@@ -50,7 +50,7 @@ namespace ClickFarm
                     int i = 1;
                     while (i < 1000)
                     {
-                        Console.WriteLine("Count: " + i);
+                        Log("Count: " + i);
                         Thread.Sleep(3000);
                         ObjectRepo.soundcloud_PlayButton.click(driver);
                         int randomWaitTime = new Random().Next(1000, 10000);
@@ -79,7 +79,10 @@ namespace ClickFarm
         public static void FarmSpotify(string media)
         {
             isRunning = true;
-            bool useOpera = true;
+
+            bool useOpera = false;
+            bool useEdge = false;
+
             string exePath;
 
             if (useOpera)
@@ -89,6 +92,15 @@ namespace ClickFarm
                 foreach (var operaDriverProcess in operaDriverProcesses)
                 {
                     operaDriverProcess.Kill();
+                }
+            }
+            else if (useEdge)
+            {
+                Process[] edgeDriverProcesses = Process.GetProcessesByName("msedgedriver");
+
+                foreach (var edgeDriverProcess in edgeDriverProcesses)
+                {
+                    edgeDriverProcess.Kill();
                 }
             }
             else
@@ -110,6 +122,10 @@ namespace ClickFarm
             {
                 exePath = ".\\operadriver.exe";
             }
+            else if (useEdge)
+            {
+                exePath = ".\\msedgedriver.exe";
+            }
             else
             {
                 exePath = ".\\chromedriver.exe";
@@ -120,6 +136,10 @@ namespace ClickFarm
             if (useOpera)
             {
                 driver = SeleniumWebDriver.SetUpOperaDriver();
+            }
+            else if (useEdge)
+            {
+                driver = SeleniumWebDriver.SetUpEdgeDriver();
             }
             else
             {
@@ -143,7 +163,7 @@ namespace ClickFarm
             if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
             {
                 string path = ".\\BadUser.txt";
-                File.AppendAllLines(path, new[] { "bad user: " + username });
+                File.AppendAllLines(path, new[] { username });
                 Thread.Sleep(5000);
                 driver.Close();
                 Process.GetCurrentProcess().Kill();
@@ -157,6 +177,8 @@ namespace ClickFarm
                 {
                     string url = currentMedia.Substring(9);
                     driver.Navigate().GoToUrl(url);
+
+                    Log("Playing playlist at " + url);
 
                     ObjectRepo.spotify_PlaylistPlay.waitForVisible(driver, 20);
 
@@ -174,12 +196,19 @@ namespace ClickFarm
                             ObjectRepo.spotify_playButton.click(driver);
                         }
 
+                        Thread.Sleep(2000);
+
+                        if (ObjectRepo.spotify_playButton.isVisible(driver))
+                        {
+                            ObjectRepo.spotify_playButton.click(driver);
+                        }
+
                         int playWholeSongRandom = new Random().Next(1, 10);
                         int randomWaitTime = new Random().Next(35, 60);
 
                         if (playWholeSongRandom == 7)
                         {
-                            Console.WriteLine("Playing whole song");
+                            Log("Playing whole song");
                             string playtime = ObjectRepo.spotify_SongPlayTime.getText(driver);
                             int minutes = Int32.Parse(playtime.Split(':')[0]);
                             int seconds = Int32.Parse(playtime.Split(':')[1]);
@@ -189,12 +218,12 @@ namespace ClickFarm
                         }
                         else
                         {
-                            Console.WriteLine("Playing for " + randomWaitTime + " seconds");
+                            Log("Playing for " + randomWaitTime + " seconds");
                             Thread.Sleep(randomWaitTime * 1000);
                             ObjectRepo.spotify_nextButton.click(driver);
                         }
 
-
+                        HandleAds(driver);
                         Thread.Sleep(500);
                     }
                 }
@@ -203,6 +232,8 @@ namespace ClickFarm
                 if (currentMedia.StartsWith("artist"))
                 {
                     string artist = currentMedia.Substring(7);
+
+                    Log("Shuffling artist discography for " + artist);
 
                     ObjectRepo.spotify_Search.waitForVisible(driver, 30);
                     ObjectRepo.spotify_Search.click(driver);
@@ -228,6 +259,7 @@ namespace ClickFarm
                         Thread.Sleep(randomWaitTime * 1000);
                         ObjectRepo.spotify_nextButton.click(driver);
                         Thread.Sleep(500);
+                        HandleAds(driver);
                     }
                 }
 
@@ -254,6 +286,15 @@ namespace ClickFarm
             }
         }
 
+        public static void HandleAds(IWebDriver driver)
+        {
+            if (ObjectRepo.spotify_Advertisement.isVisible(driver))
+            {
+                driver.Navigate().Refresh();
+                Thread.Sleep(1000);
+            }
+        }
+
         private static void ExtractResource(string path, bool useOpera)
         {
             try
@@ -270,6 +311,12 @@ namespace ClickFarm
                 File.WriteAllBytes(path, bytes);
             }
             catch { }
+        }
+
+        public static void Log(string content)
+        {
+            Console.WriteLine(content);
+            File.AppendAllText(".\\log.txt", DateTime.Now + ": " + content + Environment.NewLine);
         }
 
     }

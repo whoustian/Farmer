@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +29,8 @@ namespace ClickFarm
 
         public bool SoundCloudFarm { get; set; }
 
+        TextBoxOutputter outputter;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -42,11 +46,19 @@ namespace ClickFarm
                     MessageBox.Show("Farmer already running.", "Error Message");
                 }
 
+                outputter = new TextBoxOutputter(textBox);
+                Console.SetOut(outputter);
             }
             catch
             {
                 Farmer.isRunning = false;
             }
+        }
+
+        void TimerTick(object state)
+        {
+            var who = state as string;
+            Console.WriteLine(who);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -107,6 +119,11 @@ namespace ClickFarm
         {
             SoundCloudFarm = false;
             SpotifyFarm = true;
+        }
+
+        private void textBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            textBox.ScrollToEnd();
         }
     }
 }

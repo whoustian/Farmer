@@ -121,8 +121,14 @@
   <data name="chromedriver" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bin\Debug\chromedriver.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="log" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\log.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="media" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bin\Debug\media.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="msedgedriver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\msedgedriver.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="operadriver" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bin\Debug\operadriver.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

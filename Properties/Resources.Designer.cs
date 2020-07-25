@@ -71,11 +71,30 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string log {
+            get {
+                return ResourceManager.GetString("log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5.
         /// </summary>
         internal static string media {
             get {
                 return ResourceManager.GetString("media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] msedgedriver {
+            get {
+                object obj = ResourceManager.GetObject("msedgedriver", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
