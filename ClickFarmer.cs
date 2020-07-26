@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ClickFarm
 {
@@ -233,9 +234,12 @@ namespace ClickFarm
 
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
 
-                        while (ObjectRepo.spotify_playButton.isVisible(driver))
+                        Thread.Sleep(2000);
+
+                        while (ObjectRepo.spotify_Play.isVisible(driver))
                         {
-                            ObjectRepo.spotify_playButton.click(driver);
+                            ObjectRepo.spotify_Play.click(driver);
+                            Thread.Sleep(1000);
                         }
 
                         PlayTimeWait();
@@ -400,6 +404,19 @@ namespace ClickFarm
         {
             Console.WriteLine(content);
             File.AppendAllText(".\\log.txt", DateTime.Now + ": " + content + Environment.NewLine);
+        }
+
+        public static void Skip()
+        {
+            if (ObjectRepo.spotify_nextButton.isVisible(driver))
+            {
+                ObjectRepo.spotify_nextButton.click(driver);
+                Log("Skipped song.");
+            }
+            else
+            {
+                MessageBox.Show("Cannot skip - Skip button not visible.", "Error Message");
+            }
         }
 
     }

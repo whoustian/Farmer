@@ -125,5 +125,10 @@ namespace ClickFarm
         {
             textBox.ScrollToEnd();
         }
+
+        private void skip_Click(object sender, RoutedEventArgs e)
+        {
+            ClickFarmer.Skip();
+        }
     }
 }

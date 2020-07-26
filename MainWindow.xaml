@@ -13,5 +13,6 @@
         <TextBox x:Name="textBox" ScrollViewer.HorizontalScrollBarVisibility="Auto"
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True" HorizontalAlignment="Left" Height="225" Margin="108,147,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="574" TextChanged="textBox_TextChanged_1" Background="Black" Foreground="White" BorderBrush="Black"/>
+        <Button x:Name="skip" Content="Skip Song" HorizontalAlignment="Left" Margin="700,250,0,0" VerticalAlignment="Top" Width="75" Click="skip_Click"/>
     </Grid>
 </Window>
