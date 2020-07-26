@@ -147,8 +147,8 @@ namespace ClickFarm
             ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
             ObjectRepo.spotify_LogInButton.click(driver);
 
-            Log("Logged in as " + username + ". Waiting 30 seconds.");
-            Thread.Sleep(3000);
+            Log("Logged in as " + username + ". Waiting 10 seconds.");
+            Thread.Sleep(10000);
 
             if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
             {
@@ -199,6 +199,7 @@ namespace ClickFarm
 
                         PlayTimeWait();
                         ObjectRepo.spotify_nextButton.click(driver);
+                        CheckForSpinny(driver);
                         HandleAds(driver);
                         Thread.Sleep(500);
                     }
@@ -232,6 +233,7 @@ namespace ClickFarm
                         }
                         PlayTimeWait();
                         ObjectRepo.spotify_nextButton.click(driver);
+                        CheckForSpinny(driver);
                         Thread.Sleep(500);
                         HandleAds(driver);
                     }
@@ -260,6 +262,7 @@ namespace ClickFarm
                         PlayTimeWait();
                         driver.Navigate().Refresh();
                         ObjectRepo.spotify_Play.waitForVisible(driver, 20);
+                        CheckForSpinny(driver);
                         ObjectRepo.spotify_backButton.click(driver);
                         HandleAds(driver);
                     }
@@ -354,6 +357,17 @@ namespace ClickFarm
             {
                 driver.Navigate().Refresh();
                 Thread.Sleep(1000);
+            }
+        }
+
+        public static void CheckForSpinny(IWebDriver driver)
+        {
+            if (ObjectRepo.spotify_SpinnyPause.isVisible(driver))
+            {
+                Log("Uh oh! The spinny showed up! Refreshing page.");
+                Thread.Sleep(10000);
+                driver.Navigate().Refresh();
+                Thread.Sleep(5000);
             }
         }
 

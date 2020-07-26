@@ -31,6 +31,7 @@ namespace ClickFarm
         public static PageObject spotify_Advertisement = new PageObject(By.XPath("(//*[text()='Advertisement'])[1]"));
         public static PageObject spotify_SpinnyPause = new PageObject(By.XPath("(//*[@class='control-button spoticon-pause-16 control-button--circled control-button--loading'])[1]"));
         public static PageObject spotify_songTitle = new PageObject(By.XPath("(//*[@data-testid='nowplaying-track-link'])[1]"));
+        public static PageObject spotify_offlineIcon = new PageObject(By.XPath("//*[@aria-label='You're offline']"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));
