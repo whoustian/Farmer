@@ -264,9 +264,9 @@ namespace ClickFarm
                     ObjectRepo.spotify_backButton.click(driver);
                     while (true)
                     {
-                        while (ObjectRepo.spotify_playButton.isVisible(driver))
+                        while (ObjectRepo.spotify_Play.isVisible(driver))
                         {
-                            ObjectRepo.spotify_playButton.click(driver);
+                            ObjectRepo.spotify_Play.click(driver);
                             Thread.Sleep(2000);
                         }
 
