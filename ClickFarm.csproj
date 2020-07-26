@@ -132,5 +132,8 @@
   <ItemGroup>
     <None Include="bin\Debug\log.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\config.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

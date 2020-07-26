@@ -19,6 +19,9 @@ namespace ClickFarm
 
         public static bool isRunning = false;
 
+        public static bool useOpera = false;
+        public static bool useEdge = false;
+
         public static void FarmSoundCloud(string songsOrArtists)
         {
             isRunning = true;
@@ -80,9 +83,6 @@ namespace ClickFarm
         {
             isRunning = true;
 
-            bool useOpera = false;
-            bool useEdge = false;
-
             string exePath;
 
             if (useOpera)
@@ -133,22 +133,11 @@ namespace ClickFarm
 
             ExtractResource(exePath, useOpera);
 
-            if (useOpera)
-            {
-                driver = SeleniumWebDriver.SetUpOperaDriver();
-            }
-            else if (useEdge)
-            {
-                driver = SeleniumWebDriver.SetUpEdgeDriver();
-            }
-            else
-            {
-                driver = SeleniumWebDriver.SetUpChromeDriver();
-            }
+            GetDriver(useOpera, useEdge);
 
-            driver.Navigate().GoToUrl("https://open.spotify.com/");
+            driver.Navigate().GoToUrl("https://accounts.spotify.com/en/login?continue=https:%2F%2Fopen.spotify.com%2F");
 
-            ObjectRepo.spotify_LogIn.click(driver);
+            //ObjectRepo.spotify_LogIn.click(driver);
 
             string username = File.ReadAllText(".\\username.txt");
             string password = "Penis911!";
@@ -158,7 +147,8 @@ namespace ClickFarm
             ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
             ObjectRepo.spotify_LogInButton.click(driver);
 
-            Thread.Sleep(500);
+            Log("Logged in as " + username + ". Waiting 30 seconds.");
+            Thread.Sleep(3000);
 
             if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
             {
@@ -166,6 +156,7 @@ namespace ClickFarm
                 File.AppendAllLines(path, new[] { username });
                 Thread.Sleep(5000);
                 driver.Close();
+                Thread.Sleep(2000);
                 Process.GetCurrentProcess().Kill();
             }
 
@@ -176,11 +167,14 @@ namespace ClickFarm
                 if (currentMedia.StartsWith("playlist"))
                 {
                     string url = currentMedia.Substring(9);
+                    Thread.Sleep(2000);
                     driver.Navigate().GoToUrl(url);
 
                     Log("Playing playlist at " + url);
 
-                    ObjectRepo.spotify_PlaylistPlay.waitForVisible(driver, 20);
+                    ObjectRepo.spotify_Play.waitForVisible(driver, 20);
+
+                    Thread.Sleep(1000);
 
                     if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
                     {
@@ -191,38 +185,20 @@ namespace ClickFarm
                     {
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
 
-                        if (ObjectRepo.spotify_playButton.isVisible(driver))
+                        if (ObjectRepo.spotify_Play.isVisible(driver))
                         {
-                            ObjectRepo.spotify_playButton.click(driver);
+                            ObjectRepo.spotify_Play.click(driver);
                         }
 
                         Thread.Sleep(2000);
 
-                        if (ObjectRepo.spotify_playButton.isVisible(driver))
+                        while (ObjectRepo.spotify_playButton.isVisible(driver))
                         {
                             ObjectRepo.spotify_playButton.click(driver);
                         }
 
-                        int playWholeSongRandom = new Random().Next(1, 10);
-                        int randomWaitTime = new Random().Next(35, 60);
-
-                        if (playWholeSongRandom == 7)
-                        {
-                            Log("Playing whole song");
-                            string playtime = ObjectRepo.spotify_SongPlayTime.getText(driver);
-                            int minutes = Int32.Parse(playtime.Split(':')[0]);
-                            int seconds = Int32.Parse(playtime.Split(':')[1]);
-                            int waitTime = (minutes * 60) + seconds + 2;
-                            Thread.Sleep(waitTime * 1000);
-                            //ObjectRepo.spotify_nextButton.click(driver);
-                        }
-                        else
-                        {
-                            Log("Playing for " + randomWaitTime + " seconds");
-                            Thread.Sleep(randomWaitTime * 1000);
-                            ObjectRepo.spotify_nextButton.click(driver);
-                        }
-
+                        PlayTimeWait();
+                        ObjectRepo.spotify_nextButton.click(driver);
                         HandleAds(driver);
                         Thread.Sleep(500);
                     }
@@ -250,13 +226,11 @@ namespace ClickFarm
                     while (true)
                     {
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
-                        int randomWaitTime = new Random().Next(35, 60);
                         if (ObjectRepo.spotify_playButton.isVisible(driver))
                         {
                             ObjectRepo.spotify_playButton.click(driver);
                         }
-                        Console.WriteLine("Playing for " + randomWaitTime + " seconds");
-                        Thread.Sleep(randomWaitTime * 1000);
+                        PlayTimeWait();
                         ObjectRepo.spotify_nextButton.click(driver);
                         Thread.Sleep(500);
                         HandleAds(driver);
@@ -266,12 +240,100 @@ namespace ClickFarm
                 // Play song on repeat
                 if (currentMedia.StartsWith("song"))
                 {
-                    string song = currentMedia.Substring(5);
-                }
+                    string songUrl = currentMedia.Substring(5);
+                    Log("Playing song at " + songUrl);
+                    driver.Navigate().GoToUrl(songUrl);
+                    Thread.Sleep(2000);
+                    ObjectRepo.spotify_backButton.click(driver);
+                    Thread.Sleep(2000);
+                    ObjectRepo.spotify_backButton.click(driver);
+                    Thread.Sleep(2000);
+                    ObjectRepo.spotify_backButton.click(driver);
+                    while (true)
+                    {
+                        while (ObjectRepo.spotify_playButton.isVisible(driver))
+                        {
+                            ObjectRepo.spotify_playButton.click(driver);
+                            Thread.Sleep(2000);
+                        }
 
+                        PlayTimeWait();
+                        driver.Navigate().Refresh();
+                        ObjectRepo.spotify_Play.waitForVisible(driver, 20);
+                        ObjectRepo.spotify_backButton.click(driver);
+                        HandleAds(driver);
+                    }
+                }
             }
 
             isRunning = false;
+        }
+
+        private static void PlayTimeWait()
+        {
+            int playWholeSongRandom = new Random().Next(1, 10);
+            string playInterval;
+            int randomWaitTime = 0;
+
+            try
+            {
+                playInterval = File.ReadLines(".\\config.txt").First().Substring(13);
+            }
+            catch
+            {
+                playInterval = "1";
+            }
+
+
+            if (playInterval.Equals("dev"))
+            {
+                randomWaitTime = 5;
+            }
+            else if (Int32.Parse(playInterval) == 1)
+            {
+                randomWaitTime = new Random().Next(35, 60);
+            }
+            else if (Int32.Parse(playInterval) == 2)
+            {
+                randomWaitTime = new Random().Next(60, 120);
+            }
+
+            string songTitle = ObjectRepo.spotify_songTitle.getText(driver);
+
+            if (playWholeSongRandom == 7 || playInterval.Equals("full"))
+            {
+                if (!playInterval.Equals("dev"))
+                {
+                    Log("Playing whole song of " + songTitle);
+                    string playtime = ObjectRepo.spotify_SongPlayTime.getText(driver);
+                    int minutes = Int32.Parse(playtime.Split(':')[0]);
+                    int seconds = Int32.Parse(playtime.Split(':')[1]);
+                    int waitTime = (minutes * 60) + seconds + 2;
+                    Thread.Sleep(waitTime * 1000);
+                    //ObjectRepo.spotify_nextButton.click(driver);
+                }
+            }
+            else
+            {
+                Log("Playing " + songTitle + " for " + randomWaitTime + " seconds");
+                Thread.Sleep(randomWaitTime * 1000);
+            }
+        }
+
+        private static void GetDriver(bool useOpera, bool useEdge)
+        {
+            if (useOpera)
+            {
+                driver = SeleniumWebDriver.SetUpOperaDriver();
+            }
+            else if (useEdge)
+            {
+                driver = SeleniumWebDriver.SetUpEdgeDriver();
+            }
+            else
+            {
+                driver = SeleniumWebDriver.SetUpChromeDriver();
+            }
         }
 
         public static void cycleTop5()

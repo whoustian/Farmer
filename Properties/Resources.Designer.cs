@@ -73,6 +73,23 @@ namespace ClickFarm.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        internal static string config {
+            get {
+                return ResourceManager.GetString("config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 7/24/2020 8:58:51 PM: Playing playlist at https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5
+        ///7/24/2020 8:58:54 PM: Playing for 58 seconds
+        ///7/24/2020 9:23:00 PM: Playing playlist at https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5
+        ///7/24/2020 9:23:03 PM: Playing for 42 seconds
+        ///7/24/2020 9:23:48 PM: Playing for 39 seconds
+        ///7/24/2020 9:24:31 PM: Playing for 46 seconds
+        ///7/24/2020 9:25:20 PM: Playing for 50 seconds
+        ///7/24/2020 9:26:14 PM: Playing for 40 seconds
+        ///7/24/2020 9:26:58 PM: Playing for 43 [rest of string was truncated]&quot;;.
+        /// </summary>
         internal static string log {
             get {
                 return ResourceManager.GetString("log", resourceCulture);
@@ -109,7 +126,7 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to wdwnuyjxsiuyhscwtb@ttirv.com.
+        ///   Looks up a localized string similar to ucflwgxqdtprpxdxnm@awdrt.net.
         /// </summary>
         internal static string username {
             get {
