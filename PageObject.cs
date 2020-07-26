@@ -1,9 +1,12 @@
-﻿using OpenQA.Selenium;
+﻿using ClickFarm;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Farmer
@@ -44,8 +47,13 @@ namespace Farmer
             }
             catch (Exception e)
             {
-                Console.WriteLine("Waited " + secondsToWait + " seconds for visiblity of element: " + locator
-                        + ". Element was not visible.");
+                string content = "Waited " + secondsToWait + " seconds for visiblity of element: " + locator
+                        + ". Element was not visible.";
+                Console.WriteLine(content);
+                File.AppendAllText(".\\log.txt", DateTime.Now + ": " + content + Environment.NewLine);
+                driver.Close();
+                Thread.Sleep(10000);
+                ClickFarmer.FarmSpotify("");
             }
         }
 

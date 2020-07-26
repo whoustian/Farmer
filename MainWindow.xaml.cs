@@ -37,9 +37,9 @@ namespace ClickFarm
             DataContext = this;
             try
             {
-                if (Farmer.isRunning.Equals(false))
+                if (ClickFarmer.isRunning.Equals(false))
                 {
-                    Task.Run(() => { Farmer.FarmSpotify(ArtistNames); });
+                    Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace ClickFarm
             }
             catch
             {
-                Farmer.isRunning = false;
+                ClickFarmer.isRunning = false;
             }
         }
 
@@ -92,9 +92,9 @@ namespace ClickFarm
             //{
                 try
                 {
-                    if (Farmer.isRunning.Equals(false))
+                    if (ClickFarmer.isRunning.Equals(false))
                     {
-                        await Task.Run(() => { Farmer.FarmSpotify(ArtistNames); });
+                        await Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
                     }
                     else
                     {
@@ -104,7 +104,7 @@ namespace ClickFarm
                 }
                 catch
                 {
-                    Farmer.isRunning = false;
+                    ClickFarmer.isRunning = false;
                 }
             //}
         }

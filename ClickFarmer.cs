@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ClickFarm
 {
-    class Farmer
+    class ClickFarmer
     {
 
         public static IWebDriver driver;
@@ -176,13 +176,13 @@ namespace ClickFarm
 
                     Thread.Sleep(1000);
 
-                    if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
-                    {
-                        ObjectRepo.spotify_EnableRepeat.click(driver);
-                    }
-
                     while (true)
                     {
+                        if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
+                        {
+                            ObjectRepo.spotify_EnableRepeat.click(driver);
+                        }
+
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
 
                         if (ObjectRepo.spotify_Play.isVisible(driver))
@@ -201,7 +201,7 @@ namespace ClickFarm
                         ObjectRepo.spotify_nextButton.click(driver);
                         CheckForSpinny(driver);
                         HandleAds(driver);
-                        Thread.Sleep(500);
+                        Thread.Sleep(2000);
                     }
                 }
 
@@ -219,18 +219,25 @@ namespace ClickFarm
                     artistPage.waitForVisible(driver, 30);
                     artistPage.click(driver);
 
-                    if (ObjectRepo.spotify_shuffleButton.isVisible(driver))
-                    {
-                        ObjectRepo.spotify_shuffleButton.click(driver);
-                    }
-
                     while (true)
                     {
+                        if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
+                        {
+                            ObjectRepo.spotify_EnableRepeat.click(driver);
+                        }
+
+                        if (ObjectRepo.spotify_shuffleButton.isVisible(driver))
+                        {
+                            ObjectRepo.spotify_shuffleButton.click(driver);
+                        }
+
                         ObjectRepo.spotify_nextButton.scrollTo(driver);
-                        if (ObjectRepo.spotify_playButton.isVisible(driver))
+
+                        while (ObjectRepo.spotify_playButton.isVisible(driver))
                         {
                             ObjectRepo.spotify_playButton.click(driver);
                         }
+
                         PlayTimeWait();
                         ObjectRepo.spotify_nextButton.click(driver);
                         CheckForSpinny(driver);
