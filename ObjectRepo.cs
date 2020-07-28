@@ -26,12 +26,14 @@ namespace ClickFarm
         public static PageObject spotify_inCorrectUserNamePWError = new PageObject(By.XPath("//*[text()='Incorrect username or password.']"));
         public static PageObject spotify_Play = new PageObject(By.XPath("(//*[@aria-label='Play'])[2]"));
         public static PageObject spotify_EnableRepeatOne = new PageObject(By.XPath("(//*[@title='Enable repeat one'])[1]"));
+        public static PageObject spotify_DisableRepeat = new PageObject(By.XPath("(//*[@title='Disable repeat'])[1]"));
         public static PageObject spotify_EnableRepeat = new PageObject(By.XPath("(//*[@title='Enable repeat'])[1]"));
         public static PageObject spotify_SongPlayTime = new PageObject(By.XPath("(//*[@class='playback-bar__progress-time e80fc2e59729be32410c909c47ef87a3-scss'])[2]"));
         public static PageObject spotify_Advertisement = new PageObject(By.XPath("(//*[text()='Advertisement'])[1]"));
         public static PageObject spotify_SpinnyPause = new PageObject(By.XPath("(//*[@class='control-button spoticon-pause-16 control-button--circled control-button--loading'])[1]"));
         public static PageObject spotify_songTitle = new PageObject(By.XPath("(//*[@data-testid='nowplaying-track-link'])[1]"));
         public static PageObject spotify_offlineIcon = new PageObject(By.XPath("//*[@aria-label='You're offline']"));
+        public static PageObject spotify_tabLimit = new PageObject(By.XPath("//*[text()='So you've discovered the tab limit...']"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));

@@ -250,20 +250,41 @@ namespace ClickFarm
                     }
                 }
 
-                // Play song on repeat
+                // Play song on repeat 
                 if (currentMedia.StartsWith("song"))
                 {
                     string songUrl = currentMedia.Substring(5);
                     Log("Playing song at " + songUrl);
                     driver.Navigate().GoToUrl(songUrl);
-                    Thread.Sleep(2000);
-                    ObjectRepo.spotify_backButton.click(driver);
-                    Thread.Sleep(2000);
-                    ObjectRepo.spotify_backButton.click(driver);
-                    Thread.Sleep(2000);
-                    ObjectRepo.spotify_backButton.click(driver);
+
+                    ObjectRepo.spotify_Play.waitForVisible(driver, 10);
+
+                    //if (ObjectRepo.spotify_backButton.isVisible(driver))
+                    //{
+                    //    Thread.Sleep(2000);
+                    //    ObjectRepo.spotify_backButton.click(driver);
+                    //    Thread.Sleep(2000);
+                    //    ObjectRepo.spotify_backButton.click(driver);
+                    //}
+
                     while (true)
                     {
+                        while (!ObjectRepo.spotify_DisableRepeat.isVisible(driver))
+                        {
+                            if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
+                            {
+                                ObjectRepo.spotify_EnableRepeat.click(driver);
+                            }
+                            Thread.Sleep(3000);
+                            if (ObjectRepo.spotify_EnableRepeatOne.isVisible(driver))
+                            {
+                                ObjectRepo.spotify_EnableRepeatOne.click(driver);
+                            }
+                            Thread.Sleep(3000);
+                        }
+
+                        Thread.Sleep(2000);
+
                         while (ObjectRepo.spotify_Play.isVisible(driver))
                         {
                             ObjectRepo.spotify_Play.click(driver);
@@ -285,7 +306,7 @@ namespace ClickFarm
 
         private static void PlayTimeWait()
         {
-            int playWholeSongRandom = new Random().Next(1, 10);
+            int playWholeSongRandom = new Random().Next(1, 20);
             string playInterval;
             int randomWaitTime = 0;
 
