@@ -28,8 +28,17 @@ namespace Farmer
 
         public void click(IWebDriver driver)
         {
-            IWebElement element = driver.FindElement(locator);
-            element.Click();
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                wait.Until(drv => drv.FindElement(locator));
+                IWebElement element = driver.FindElement(locator);
+                element.Click();
+            }
+            catch (Exception e)
+            {
+                ClickFarmer.Log("Click exception: " + e.Message);
+            }
         }
 
         public String getText(IWebDriver driver)
