@@ -151,6 +151,8 @@ namespace ClickFarm
                 ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
                 ObjectRepo.spotify_LogInButton.click(driver);
 
+                ObjectRepo.spotify_Search.waitForVisible(driver, 20);
+
                 Log("Logged in as " + username + ". Waiting 10 seconds.");
                 Thread.Sleep(10000);
 
@@ -170,6 +172,7 @@ namespace ClickFarm
                     // Play playlist on repeat
                     if (currentMedia.StartsWith("playlist"))
                     {
+                        bool firstRun = true;
                         string url = currentMedia.Substring(9);
                         Thread.Sleep(2000);
                         driver.Navigate().GoToUrl(url);
@@ -182,9 +185,9 @@ namespace ClickFarm
 
                         while (true)
                         {
-                            if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
+                            if (!firstRun)
                             {
-                                ObjectRepo.spotify_EnableRepeat.click(driver);
+                                EnableRepeat();
                             }
 
                             ObjectRepo.spotify_nextButton.scrollTo(driver);
@@ -205,6 +208,7 @@ namespace ClickFarm
                             ObjectRepo.spotify_nextButton.click(driver);
                             CheckForSpinny(driver);
                             HandleAds(driver);
+                            firstRun = false;
                             Thread.Sleep(2000);
                         }
                     }
@@ -212,27 +216,20 @@ namespace ClickFarm
                     // Shuffle artist discography
                     if (currentMedia.StartsWith("artist"))
                     {
-                        string artist = currentMedia.Substring(7);
+                        bool firstRun = true;
+                        string artistUrl = currentMedia.Substring(7);
 
-                        Log("Shuffling artist discography for " + artist);
+                        Log("Shuffling artist discography for artist at " + artistUrl);
 
-                        ObjectRepo.spotify_Search.waitForVisible(driver, 30);
-                        ObjectRepo.spotify_Search.click(driver);
-                        ObjectRepo.spotify_SearchBar.SetValue(driver, artist);
-                        PageObject artistPage = ObjectRepo.getArtistObject(artist);
-                        artistPage.waitForVisible(driver, 30);
-                        artistPage.click(driver);
+                        driver.Navigate().GoToUrl(artistUrl);
 
                         while (true)
                         {
-                            if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
-                            {
-                                ObjectRepo.spotify_EnableRepeat.click(driver);
-                            }
 
-                            if (ObjectRepo.spotify_shuffleButton.isVisible(driver))
+                            if (!firstRun)
                             {
-                                ObjectRepo.spotify_shuffleButton.click(driver);
+                                EnableRepeat();
+                                EnableShuffle();
                             }
 
                             ObjectRepo.spotify_nextButton.scrollTo(driver);
@@ -245,11 +242,17 @@ namespace ClickFarm
                                 Thread.Sleep(1000);
                             }
 
+                            while (ObjectRepo.spotify_playButton.isVisible(driver))
+                            {
+                                ObjectRepo.spotify_playButton.click(driver);
+                            }
+
                             PlayTimeWait();
                             ObjectRepo.spotify_nextButton.click(driver);
                             CheckForSpinny(driver);
                             Thread.Sleep(500);
                             HandleAds(driver);
+                            firstRun = false;
                         }
                     }
 
@@ -262,14 +265,6 @@ namespace ClickFarm
                         driver.Navigate().GoToUrl(songUrl);
 
                         ObjectRepo.spotify_Play.waitForVisible(driver, 10);
-
-                        //if (ObjectRepo.spotify_backButton.isVisible(driver))
-                        //{
-                        //    Thread.Sleep(2000);
-                        //    ObjectRepo.spotify_backButton.click(driver);
-                        //    Thread.Sleep(2000);
-                        //    ObjectRepo.spotify_backButton.click(driver);
-                        //}
 
                         while (true)
                         {
@@ -292,7 +287,6 @@ namespace ClickFarm
                             driver.Navigate().Refresh();
                             ObjectRepo.spotify_Play.waitForVisible(driver, 20);
                             CheckForSpinny(driver);
-                            //ObjectRepo.spotify_backButton.click(driver);
                             HandleAds(driver);
                             firstRun = false;
                         }
@@ -304,6 +298,39 @@ namespace ClickFarm
             catch (Exception e)
             {
                 Log("Error: " + e.Message);
+            }
+        }
+
+        private static void EnableShuffle()
+        {
+            while (ObjectRepo.spotify_shuffleButton.isVisible(driver))
+            {
+                ObjectRepo.spotify_shuffleButton.click(driver);
+                Thread.Sleep(1000);
+            }
+        }
+
+        private static void EnableRepeat()
+        {
+            int i = 0;
+            while (!ObjectRepo.spotify_EnableRepeatOne.isVisible(driver))
+            {
+                if (ObjectRepo.spotify_EnableRepeat.isVisible(driver))
+                {
+                    ObjectRepo.spotify_EnableRepeat.click(driver);
+                }
+                Thread.Sleep(3000);
+                if (ObjectRepo.spotify_DisableRepeat.isVisible(driver))
+                {
+                    ObjectRepo.spotify_DisableRepeat.click(driver);
+                }
+                Thread.Sleep(3000);
+                i++;
+                if (i == 50)
+                {
+                    Log("Encountered repeat bug.");
+                    break;
+                }
             }
         }
 
@@ -323,7 +350,7 @@ namespace ClickFarm
                 }
                 Thread.Sleep(3000);
                 i++;
-                if (i == 200)
+                if (i == 50)
                 {
                     Log("Encountered repeat bug.");
                     break;

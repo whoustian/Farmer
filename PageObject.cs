@@ -81,9 +81,18 @@ namespace Farmer
 
         public void scrollTo(IWebDriver driver)
         {
-            IWebElement element = driver.FindElement(locator);
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            js.ExecuteScript("arguments[0].scrollIntoView(true);", element);
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+                wait.Until(drv => drv.FindElement(locator));
+                IWebElement element = driver.FindElement(locator);
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                js.ExecuteScript("arguments[0].scrollIntoView(true);", element);
+            }
+            catch (Exception e)
+            {
+                ClickFarmer.Log("ScrollTo exception: " + e.Message);
+            }
         }
 
 
