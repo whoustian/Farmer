@@ -33,13 +33,22 @@ namespace ClickFarm
 
         public MainWindow()
         {
+            bool spotify = true;
             InitializeComponent();
             DataContext = this;
             try
             {
                 if (ClickFarmer.isRunning.Equals(false))
                 {
-                    Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
+                    if (spotify)
+                    {
+                        Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
+                    }
+                    else
+                    {
+                        Task.Run(() => { ClickFarmer.FarmSoundCloud(ArtistNames); });
+                    }
+
                 }
                 else
                 {
@@ -90,22 +99,22 @@ namespace ClickFarm
             //}
             //else if (SpotifyFarm)
             //{
-                try
+            try
+            {
+                if (ClickFarmer.isRunning.Equals(false))
                 {
-                    if (ClickFarmer.isRunning.Equals(false))
-                    {
-                        await Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
-                    }
-                    else
-                    {
-                        MessageBox.Show("Farmer already running.", "Error Message");
-                    }
+                    await Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
+                }
+                else
+                {
+                    MessageBox.Show("Farmer already running.", "Error Message");
+                }
 
-                }
-                catch
-                {
-                    ClickFarmer.isRunning = false;
-                }
+            }
+            catch
+            {
+                ClickFarmer.isRunning = false;
+            }
             //}
         }
 

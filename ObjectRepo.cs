@@ -35,6 +35,7 @@ namespace ClickFarm
         public static PageObject spotify_offlineIcon = new PageObject(By.XPath("//*[@aria-label='You're offline']"));
         public static PageObject spotify_tabLimit = new PageObject(By.XPath("//*[text()='So you've discovered the tab limit...']"));
         public static PageObject spotify_politeBar = new PageObject(By.XPath("//*[@aria-live='polite']"));
+        public static PageObject spotify_likeSong = new PageObject(By.XPath("(//*[@title='Save to your Liked Songs'])[1]"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));

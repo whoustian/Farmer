@@ -151,10 +151,7 @@ namespace ClickFarm
                 ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
                 ObjectRepo.spotify_LogInButton.click(driver);
 
-                ObjectRepo.spotify_Search.waitForVisible(driver, 20);
-
-                Log("Logged in as " + username + ". Waiting 10 seconds.");
-                Thread.Sleep(10000);
+                Thread.Sleep(3000);
 
                 if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
                 {
@@ -165,6 +162,12 @@ namespace ClickFarm
                     Thread.Sleep(2000);
                     Process.GetCurrentProcess().Kill();
                 }
+
+
+                Log("Logged in as " + username + ". Waiting 10 seconds.");
+                Thread.Sleep(10000);
+
+                ObjectRepo.spotify_Search.waitForVisible(driver, 20);
 
                 foreach (string currentMedia in mediaList)
                 {
@@ -207,6 +210,7 @@ namespace ClickFarm
                             }
 
                             PlayTimeWait();
+                            LikeMedia();
                             ObjectRepo.spotify_nextButton.click(driver);
                             CheckForSpinny(driver);
                             HandleAds(driver);
@@ -252,6 +256,7 @@ namespace ClickFarm
                             }
 
                             PlayTimeWait();
+                            LikeMedia();
                             ObjectRepo.spotify_nextButton.click(driver);
                             CheckForSpinny(driver);
                             Thread.Sleep(500);
@@ -290,6 +295,7 @@ namespace ClickFarm
                             EnableRepeatOne();
 
                             PlayTimeWait();
+                            LikeMedia();
                             driver.Navigate().Refresh();
                             ObjectRepo.spotify_Play.waitForVisible(driver, 20);
                             CheckForSpinny(driver);
@@ -516,6 +522,20 @@ namespace ClickFarm
             else
             {
                 MessageBox.Show("Cannot skip - Skip button not visible.", "Error Message");
+            }
+        }
+
+        public static void LikeMedia()
+        {
+            int random = new Random().Next(1, 10);
+            if (random == 10)
+            {
+                if (ObjectRepo.spotify_likeSong.isVisible(driver))
+                {
+                    Log("Liking current song.");
+                    ObjectRepo.spotify_likeSong.click(driver);
+                    Thread.Sleep(2000);
+                }
             }
         }
 
