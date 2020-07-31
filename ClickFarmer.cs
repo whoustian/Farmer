@@ -181,6 +181,8 @@ namespace ClickFarm
 
                         ObjectRepo.spotify_Play.waitForVisible(driver, 20);
 
+                        HandlePoliteBar(driver);
+
                         Thread.Sleep(1000);
 
                         while (true)
@@ -234,6 +236,8 @@ namespace ClickFarm
 
                             ObjectRepo.spotify_nextButton.scrollTo(driver);
 
+                            HandlePoliteBar(driver);
+
                             Thread.Sleep(2000);
 
                             while (ObjectRepo.spotify_Play.isVisible(driver))
@@ -272,6 +276,8 @@ namespace ClickFarm
                             {
                                 EnableRepeatOne();
                             }
+
+                            HandlePoliteBar(driver);
 
                             Thread.Sleep(2000);
 
@@ -329,6 +335,9 @@ namespace ClickFarm
                 if (i == 50)
                 {
                     Log("Encountered repeat bug.");
+                    driver.Close();
+                    Thread.Sleep(10000);
+                    FarmSpotify("");
                     break;
                 }
             }
@@ -353,6 +362,9 @@ namespace ClickFarm
                 if (i == 50)
                 {
                     Log("Encountered repeat bug.");
+                    driver.Close();
+                    Thread.Sleep(10000);
+                    FarmSpotify("");
                     break;
                 }
             }
@@ -441,8 +453,21 @@ namespace ClickFarm
         {
             if (ObjectRepo.spotify_Advertisement.isVisible(driver))
             {
+                Log("Encountered advertisement. Refreshing.");
                 driver.Navigate().Refresh();
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
+                ObjectRepo.spotify_Search.waitForVisible(driver, 20);
+            }
+        }
+
+        public static void HandlePoliteBar(IWebDriver driver)
+        {
+            if (ObjectRepo.spotify_politeBar.isVisible(driver))
+            {
+                Log("Encountered bottom taskbar. Refreshing.");
+                driver.Navigate().Refresh();
+                Thread.Sleep(3000);
+                ObjectRepo.spotify_Search.waitForVisible(driver, 20);
             }
         }
 
@@ -450,7 +475,7 @@ namespace ClickFarm
         {
             if (ObjectRepo.spotify_SpinnyPause.isVisible(driver))
             {
-                Log("Uh oh! The spinny showed up! Refreshing page.");
+                Log("Uh oh! The dreaded spinny! Refreshing page in 10 seconds.");
                 Thread.Sleep(10000);
                 driver.Navigate().Refresh();
                 Thread.Sleep(5000);

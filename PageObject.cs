@@ -92,10 +92,11 @@ namespace Farmer
             catch (Exception e)
             {
                 ClickFarmer.Log("ScrollTo exception: " + e.Message);
+                driver.Close();
+                Thread.Sleep(10000);
+                ClickFarmer.FarmSpotify("");
             }
         }
-
-
 
     }
 }
