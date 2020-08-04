@@ -11,6 +11,10 @@ namespace ClickFarm
     class ObjectRepo
     {
 
+        public const string ShowChromeWindow = "ShowChromeWindow";
+        public const string PlayFullSongs = "PlayFullSongs";
+        public const string PlayInterval = "PlayInterval";
+
         public static PageObject spotify_LogIn = new PageObject(By.XPath("//*[text()='Log in']"));
         public static PageObject spotify_UserNameBox = new PageObject(By.XPath("//*[@ng-model='form.username']"));
         public static PageObject spotify_PassWordBox = new PageObject(By.XPath("//*[@ng-model='form.password']"));
@@ -36,6 +40,9 @@ namespace ClickFarm
         public static PageObject spotify_tabLimit = new PageObject(By.XPath("//*[text()='So you've discovered the tab limit...']"));
         public static PageObject spotify_politeBar = new PageObject(By.XPath("//*[@aria-live='polite']"));
         public static PageObject spotify_likeSong = new PageObject(By.XPath("(//*[@title='Save to your Liked Songs'])[1]"));
+        public static PageObject spotfiy_logo = new PageObject(By.XPath("//*[@class='spotify-logo--text']"));
+        public static PageObject spotify_playerControls = new PageObject(By.XPath("(//*[@aria-label='Player controls'])[1]"));
+        public static PageObject spotify_politeBarbutton = new PageObject(By.XPath("(//*[@aria-label='Connect to a device'])[1]"));
 
         public static PageObject soundcloud_SearchBar = new PageObject(By.XPath("(//*[@type='search'])[2]"));
         public static PageObject soundcloud_SearchButton = new PageObject(By.XPath("(//*[@type='submit'])[2]"));

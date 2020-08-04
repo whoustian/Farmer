@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using ClickFarm;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Opera;
 using System;
@@ -23,7 +24,15 @@ namespace Farmer
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddArgument("--start-maximized");
                 chromeOptions.AddArgument("mute-audio");
-                //chromeOptions.BinaryLocation = @"C:\Users\Will\source\repos\ClickFarm\chrome-win\chrome.exe";
+
+                string test = ClickFarmer.getConfigValue(ObjectRepo.ShowChromeWindow);
+
+                if (ClickFarmer.getConfigValue(ObjectRepo.ShowChromeWindow).Equals("false"))
+                {
+                    chromeOptions.AddArgument("Headless");                    
+                }
+                
+
                 return new ChromeDriver(service, chromeOptions);
             }
             catch (Exception err)
@@ -33,7 +42,8 @@ namespace Farmer
             }
         }
 
-        public static OperaDriver SetUpOperaDriver() {
+        public static OperaDriver SetUpOperaDriver()
+        {
             try
             {
                 var operaOptions = new OperaOptions();
