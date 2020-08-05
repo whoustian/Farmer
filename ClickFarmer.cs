@@ -566,7 +566,7 @@ namespace ClickFarm
         public static void LikeMedia()
         {
             int random = new Random().Next(1, 10);
-            if (random == 10)
+            if (random == 7)
             {
                 if (ObjectRepo.spotify_likeSong.isVisible(driver))
                 {
