@@ -199,6 +199,8 @@ namespace ClickFarm
 
                         Thread.Sleep(1000);
 
+                        LikePlayList();
+
                         while (true)
                         {
                             if (!firstRun)
@@ -213,14 +215,14 @@ namespace ClickFarm
                                 ObjectRepo.spotify_Play.click(driver);
                                 Thread.Sleep(2000);
                             }
-                            
+
                             while (ObjectRepo.spotify_playButton.isVisible(driver))
                             {
                                 ObjectRepo.spotify_playButton.click(driver);
                             }
 
                             PlayTimeWait();
-                            LikeMedia();
+                            LikeSong();
                             ObjectRepo.spotify_nextButton.click(driver);
                             Thread.Sleep(2000);
                             HandleAds(driver);
@@ -266,7 +268,7 @@ namespace ClickFarm
                             }
 
                             PlayTimeWait();
-                            LikeMedia();
+                            LikeSong();
                             ObjectRepo.spotify_nextButton.click(driver);
                             Thread.Sleep(2000);
                             HandleAds(driver);
@@ -305,7 +307,7 @@ namespace ClickFarm
                             EnableRepeatOne();
 
                             PlayTimeWait();
-                            LikeMedia();
+                            LikeSong();
                             driver.Navigate().Refresh();
                             ObjectRepo.spotify_Play.waitForVisible(driver, 20);
                             HandleAds(driver);
@@ -563,7 +565,7 @@ namespace ClickFarm
             }
         }
 
-        public static void LikeMedia()
+        public static void LikeSong()
         {
             int random = new Random().Next(1, 10);
             if (random == 7)
@@ -572,6 +574,20 @@ namespace ClickFarm
                 {
                     Log("Liking current song.");
                     ObjectRepo.spotify_likeSong.click(driver);
+                    Thread.Sleep(2000);
+                }
+            }
+        }
+
+        public static void LikePlayList()
+        {
+            int random = new Random().Next(1, 10);
+            if (random == 7)
+            {
+                if (ObjectRepo.spotify_likePlaylist.isVisible(driver))
+                {
+                    Log("Liking current playlist.");
+                    ObjectRepo.spotify_likePlaylist.click(driver);
                     Thread.Sleep(2000);
                 }
             }

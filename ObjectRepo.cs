@@ -40,6 +40,7 @@ namespace ClickFarm
         public static PageObject spotify_tabLimit = new PageObject(By.XPath("//*[text()='So you've discovered the tab limit...']"));
         public static PageObject spotify_politeBar = new PageObject(By.XPath("//*[@aria-live='polite']"));
         public static PageObject spotify_likeSong = new PageObject(By.XPath("(//*[@title='Save to your Liked Songs'])[1]"));
+        public static PageObject spotify_likePlaylist = new PageObject(By.XPath("//*[@title='Save to Your Library']"));
         public static PageObject spotfiy_logo = new PageObject(By.XPath("//*[@class='spotify-logo--text']"));
         public static PageObject spotify_playerControls = new PageObject(By.XPath("(//*[@aria-label='Player controls'])[1]"));
         public static PageObject spotify_politeBarbutton = new PageObject(By.XPath("(//*[@aria-label='Connect to a device'])[1]"));
