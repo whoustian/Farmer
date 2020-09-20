@@ -153,7 +153,7 @@ namespace ClickFarm
                 //ObjectRepo.spotify_LogIn.click(driver);
 
                 string username = File.ReadAllText(".\\username.txt");
-                string password = "Penis911!";
+                string password = File.ReadAllText(".\\password.txt");
 
                 ObjectRepo.spotify_UserNameBox.waitForVisible(driver, 30);
                 ObjectRepo.spotify_UserNameBox.SetValue(driver, username);

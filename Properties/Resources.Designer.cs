@@ -71,7 +71,12 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to PlayInterval:1
+        ///PlayFullSongs:false
+        ///
+        ///PlayInterval 1 = play for 35-60 seconds
+        ///PlayInterval 2 = play for 60-120 seconds
+        ///PlayInterval dev = play for 5 seconds.
         /// </summary>
         internal static string config {
             get {
@@ -97,7 +102,13 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5.
+        ///   Looks up a localized string similar to playlist:https://open.spotify.com/playlist/6VuJyYSvFDfKncYebsNHUA?si=WmR5QcrLTjSVkJPX0-H2hg
+        ///
+        ///
+        ///// solace presents
+        ///playlist:https://open.spotify.com/playlist/1hgGEYBYYKcnbhzUjDvqA5
+        ///song:https://open.spotify.com/album/4lxJzGnWwDWNtevy0kZOOR
+        ///artist:https://open.spotify.com/artist/7CCrWKLbAto1EXI2eoG9Vu.
         /// </summary>
         internal static string media {
             get {
@@ -126,7 +137,7 @@ namespace ClickFarm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ucflwgxqdtprpxdxnm@awdrt.net.
+        ///   Looks up a localized string similar to cgoyndmqutugnwijvb@ttirv.com.
         /// </summary>
         internal static string username {
             get {
