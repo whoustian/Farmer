@@ -24,7 +24,7 @@ namespace ClickFarm
         public static bool useOpera = false;
         public static bool useEdge = false;
 
-        public static void FarmSoundCloud(string songsOrArtists)
+        public static void FarmSoundCloud(string media)
         {
             isRunning = true;
             bool useOpera = false;
@@ -36,7 +36,9 @@ namespace ClickFarm
                 chromeDriverProcess.Kill();
             }
 
-            List<string> songsOrArtistsList = songsOrArtists.Split('\n').ToList();
+            media = File.ReadAllText(".\\media.txt");
+
+            List<string> mediaList = media.Split('\n').ToList();
 
             string exePath = ".\\chromedriver.exe";
 
@@ -44,7 +46,7 @@ namespace ClickFarm
 
             driver = SeleniumWebDriver.SetUpChromeDriver();
 
-            foreach (string item in songsOrArtistsList)
+            foreach (string item in mediaList)
             {
                 bool isSongLink = item.StartsWith("http");
 
@@ -69,7 +71,7 @@ namespace ClickFarm
                 {
                     driver.Navigate().GoToUrl("https://www.soundcloud.com");
 
-                    foreach (string artist in songsOrArtistsList)
+                    foreach (string artist in mediaList)
                     {
                         ObjectRepo.soundcloud_SearchBar.SetValue(driver, artist);
                         ObjectRepo.soundcloud_SearchButton.click(driver);
