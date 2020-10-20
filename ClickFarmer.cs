@@ -19,6 +19,8 @@ namespace ClickFarm
 
         public static IWebDriver driver;
 
+        // HI
+
         public static bool isRunning = false;
 
         public static bool useOpera = false;

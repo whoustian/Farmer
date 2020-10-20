@@ -31,6 +31,7 @@ namespace ClickFarm
 
         TextBoxOutputter outputter;
 
+        // top level interface. bool spotify is defaulted to true, but if you set it to false it will go and use FarmSoundCloud.
         public MainWindow()
         {
             bool spotify = true;
