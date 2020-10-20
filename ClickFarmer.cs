@@ -24,7 +24,7 @@ namespace ClickFarm
         public static bool isRunning = false;
 
         public static bool useOpera = false;
-        public static bool useEdge = false;
+        public static bool useEdge = true;
 
         public static void FarmSoundCloud(string media)
         {
@@ -44,7 +44,7 @@ namespace ClickFarm
 
             string exePath = ".\\chromedriver.exe";
 
-            ExtractResource(exePath, useOpera);
+            ExtractResource(exePath);
 
             driver = SeleniumWebDriver.SetUpChromeDriver();
 
@@ -129,17 +129,20 @@ namespace ClickFarm
                 if (useOpera)
                 {
                     exePath = ".\\operadriver.exe";
+                    Log("Using Opera");
                 }
                 else if (useEdge)
                 {
                     exePath = ".\\msedgedriver.exe";
+                    Log("Using Edge");
                 }
                 else
                 {
                     exePath = ".\\chromedriver.exe";
+                    Log("Using Chrome");
                 }
 
-                ExtractResource(exePath, useOpera);
+                ExtractResource(exePath);
 
                 GetDriver(useOpera, useEdge);
 
@@ -532,7 +535,7 @@ namespace ClickFarm
             }
         }
 
-        private static void ExtractResource(string path, bool useOpera)
+        private static void ExtractResource(string path)
         {
             try
             {
@@ -540,6 +543,10 @@ namespace ClickFarm
                 if (useOpera)
                 {
                     bytes = Properties.Resources.operadriver;
+                }
+                if (useEdge)
+                {
+                    bytes = Properties.Resources.msedgedriver;
                 }
                 else
                 {
