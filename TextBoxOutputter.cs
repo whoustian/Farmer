@@ -8,6 +8,9 @@ using System.Windows.Controls;
 
 namespace ClickFarm
 {
+
+    // this class pertains to the logging functionality and having the logs show up in the UI. 
+
     public class TextBoxOutputter : TextWriter
     {
         TextBox textBox = null;

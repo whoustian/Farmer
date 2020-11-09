@@ -23,7 +23,7 @@ namespace ClickFarm
     public partial class MainWindow : Window
     {
 
-        public string ArtistNames { get; set; }
+        public string Media { get; set; }
 
         public bool SpotifyFarm { get; set; }
 
@@ -31,7 +31,7 @@ namespace ClickFarm
 
         TextBoxOutputter outputter;
 
-        // top level interface. bool spotify is defaulted to true, but if you set it to false it will go and use FarmSoundCloud.
+        // top level interface. bool spotify on line 37 determines if you are using spotify or soundcloud.
         public MainWindow()
         {
             bool spotify = true;
@@ -43,11 +43,11 @@ namespace ClickFarm
                 {
                     if (spotify)
                     {
-                        Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
+                        Task.Run(() => { ClickFarmer.FarmSpotify(Media); });
                     }
                     else
                     {
-                        Task.Run(() => { ClickFarmer.FarmSoundCloud(ArtistNames); });
+                        Task.Run(() => { ClickFarmer.FarmSoundCloud(Media); });
                     }
 
                 }
@@ -65,6 +65,7 @@ namespace ClickFarm
             }
         }
 
+        // Much of what's down here is no longer used, just pieces of the UI that used to exist and don't anymore. Wouldn't delete any of it though without retesting.
         void TimerTick(object state)
         {
             var who = state as string;
@@ -104,7 +105,7 @@ namespace ClickFarm
             {
                 if (ClickFarmer.isRunning.Equals(false))
                 {
-                    await Task.Run(() => { ClickFarmer.FarmSpotify(ArtistNames); });
+                    await Task.Run(() => { ClickFarmer.FarmSpotify(Media); });
                 }
                 else
                 {

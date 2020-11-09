@@ -10,6 +10,8 @@ namespace ClickFarm
 {
     class ObjectRepo
     {
+        // a repository of PageObjects
+
 
         public const string ShowChromeWindow = "ShowChromeWindow";
         public const string PlayFullSongs = "PlayFullSongs";

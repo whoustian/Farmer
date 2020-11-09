@@ -19,35 +19,44 @@ namespace ClickFarm
 
         public static IWebDriver driver;
 
-        // HI
-
         public static bool isRunning = false;
-
         public static bool useOpera = false;
         public static bool useEdge = true;
 
+
+        // The logic for soundcloud. much smaller and more simplistic than Spotify. it just will play a song on repeat, refreshing after a random number of seconds.
         public static void FarmSoundCloud(string media)
         {
             isRunning = true;
-            bool useOpera = false;
+            string exePath;
+            KillBrowserProcesses();
 
-            Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
-
-            foreach (var chromeDriverProcess in chromeDriverProcesses)
-            {
-                chromeDriverProcess.Kill();
-            }
-
+            // read in media file and split into list on new lines
             media = File.ReadAllText(".\\media.txt");
-
             List<string> mediaList = media.Split('\n').ToList();
 
-            string exePath = ".\\chromedriver.exe";
+            if (useOpera)
+            {
+                exePath = ".\\operadriver.exe";
+                Log("Using Opera");
+            }
+            else if (useEdge)
+            {
+                exePath = ".\\msedgedriver.exe";
+                Log("Using Edge");
+            }
+            else
+            {
+                exePath = ".\\chromedriver.exe";
+                Log("Using Chrome");
+            }
 
             ExtractResource(exePath);
 
-            driver = SeleniumWebDriver.SetUpChromeDriver();
+            // assigns value of global driver variable to what browser you are using
+            GetDriver(useOpera, useEdge);
 
+            // loop thru the media lines in media.txt
             foreach (string item in mediaList)
             {
                 bool isSongLink = item.StartsWith("http");
@@ -71,6 +80,8 @@ namespace ClickFarm
                 }
                 else
                 {
+                    // this code block is incomplete. looks like i started writing some logic for shuffling artists on Soundcloud but then pivoted to working on Spotify.
+                    // soundcloud only works now with individual songs.
                     driver.Navigate().GoToUrl("https://www.soundcloud.com");
 
                     foreach (string artist in mediaList)
@@ -84,7 +95,7 @@ namespace ClickFarm
             isRunning = false;
         }
 
-
+        // All logic for Spotify farming is contained in this method
         public static void FarmSpotify(string media)
         {
             try
@@ -93,37 +104,11 @@ namespace ClickFarm
 
                 string exePath;
 
-                if (useOpera)
-                {
-                    Process[] operaDriverProcesses = Process.GetProcessesByName("operadriver");
+                // Kill driver before running (doesn't always work for some reason)
+                KillBrowserProcesses();
 
-                    foreach (var operaDriverProcess in operaDriverProcesses)
-                    {
-                        operaDriverProcess.Kill();
-                    }
-                }
-                else if (useEdge)
-                {
-                    Process[] edgeDriverProcesses = Process.GetProcessesByName("msedgedriver");
-
-                    foreach (var edgeDriverProcess in edgeDriverProcesses)
-                    {
-                        edgeDriverProcess.Kill();
-                    }
-                }
-                else
-                {
-                    Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
-
-                    foreach (var chromeDriverProcess in chromeDriverProcesses)
-                    {
-                        chromeDriverProcess.Kill();
-                    }
-                }
-
-
+                // read in media file and split into list on new lines
                 media = File.ReadAllText(".\\media.txt");
-
                 List<string> mediaList = media.Split('\n').ToList();
 
                 if (useOpera)
@@ -144,8 +129,10 @@ namespace ClickFarm
 
                 ExtractResource(exePath);
 
+                // assigns value of global driver variable to what browser you are using
                 GetDriver(useOpera, useEdge);
 
+                // go to Spotify login page and wait either 15 or 5 seconds depending on if you are showing Chrome window. Honestly not sure why we are doing this wait here.
                 driver.Navigate().GoToUrl("https://accounts.spotify.com/en/login?continue=https:%2F%2Fopen.spotify.com%2F");
 
                 if (ClickFarmer.getConfigValue(ObjectRepo.ShowChromeWindow).Equals("false"))
@@ -157,11 +144,10 @@ namespace ClickFarm
                     driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                 }
 
-                //ObjectRepo.spotify_LogIn.click(driver);
-
                 string username = File.ReadAllText(".\\username.txt");
                 string password = File.ReadAllText(".\\password.txt");
 
+                // enter username and password, login
                 ObjectRepo.spotify_UserNameBox.waitForVisible(driver, 30);
                 ObjectRepo.spotify_UserNameBox.SetValue(driver, username);
                 ObjectRepo.spotify_PassWordBox.SetValue(driver, password);
@@ -169,6 +155,7 @@ namespace ClickFarm
 
                 Thread.Sleep(3000);
 
+                // add bad users to bad user text file
                 if (ObjectRepo.spotify_inCorrectUserNamePWError.isVisible(driver))
                 {
                     string badUserPath = ".\\BadUser.txt";
@@ -187,6 +174,7 @@ namespace ClickFarm
 
                 ObjectRepo.spotify_Search.waitForVisible(driver, 20);
 
+                // loop through each media entry in the list
                 foreach (string currentMedia in mediaList)
                 {
 
@@ -215,19 +203,23 @@ namespace ClickFarm
                                 EnableRepeat();
                             }
 
+                            // scroll to player controls, press play button
                             ObjectRepo.spotify_playerControls.scrollTo(driver);
 
+                            // play button is a bit finicky sometimes and doesn't remain pressed, so i have this if statement and while loop below to make sure it gets pressed.
                             if (ObjectRepo.spotify_Play.isVisible(driver))
                             {
                                 ObjectRepo.spotify_Play.click(driver);
                                 Thread.Sleep(2000);
                             }
 
+                            // once the play button is pressed, it becomes the pause button and it is no longer visible to Selenium
                             while (ObjectRepo.spotify_playButton.isVisible(driver))
                             {
                                 ObjectRepo.spotify_playButton.click(driver);
                             }
 
+                            // wait the number of seconds determined bny PlayTimeWait(), randomly like the song, hit next, handle ads, spinny, and loop again
                             PlayTimeWait();
                             LikeSong();
                             ObjectRepo.spotify_nextButton.click(driver);
@@ -332,6 +324,37 @@ namespace ClickFarm
             }
         }
 
+        private static void KillBrowserProcesses()
+        {
+            if (useOpera)
+            {
+                Process[] operaDriverProcesses = Process.GetProcessesByName("operadriver");
+
+                foreach (var operaDriverProcess in operaDriverProcesses)
+                {
+                    operaDriverProcess.Kill();
+                }
+            }
+            else if (useEdge)
+            {
+                Process[] edgeDriverProcesses = Process.GetProcessesByName("msedgedriver");
+
+                foreach (var edgeDriverProcess in edgeDriverProcesses)
+                {
+                    edgeDriverProcess.Kill();
+                }
+            }
+            else
+            {
+                Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
+
+                foreach (var chromeDriverProcess in chromeDriverProcesses)
+                {
+                    chromeDriverProcess.Kill();
+                }
+            }
+        }
+
         private static void EnableShuffle()
         {
             while (ObjectRepo.spotify_shuffleButton.isVisible(driver))
@@ -386,6 +409,7 @@ namespace ClickFarm
                 i++;
                 if (i == 50)
                 {
+                    // there was sometimes a bug with pressing repeat where it wouldn't work, so i have it try 50 times and then restart the driver.
                     Log("Encountered repeat bug.");
                     driver.Close();
                     Thread.Sleep(10000);
@@ -395,6 +419,7 @@ namespace ClickFarm
             }
         }
 
+        // Method which determines how long to wait for a song based on the config value PlayInterval, and whole song mode being enabled
         private static void PlayTimeWait()
         {
             string playInterval;
@@ -428,6 +453,7 @@ namespace ClickFarm
 
             int playWholeSongRandom = new Random().Next(1, 20);
 
+            // whole song mode
             if (playWholeSongRandom == 7 || playInterval.Equals("full"))
             {
                 if (!playInterval.Equals("dev"))
@@ -514,6 +540,7 @@ namespace ClickFarm
             }
         }
 
+        // This is an annoying bar that sometimes pops up at the bottom of the screen, just a method checking for it and getting rid of it if needed. 
         public static void HandlePoliteBar(IWebDriver driver)
         {
             if (ObjectRepo.spotify_politeBar.isVisible(driver))
@@ -535,6 +562,7 @@ namespace ClickFarm
             }
         }
 
+        // writes the driver.exe file 
         private static void ExtractResource(string path)
         {
             try
@@ -578,6 +606,7 @@ namespace ClickFarm
 
         public static void LikeSong()
         {
+            // generate a random number one thru 10
             int random = new Random().Next(1, 10);
             if (random == 7)
             {

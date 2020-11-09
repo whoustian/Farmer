@@ -13,6 +13,8 @@ namespace Farmer
 {
     class PageObject
     {
+        //this class defines the PageObject object and all the methods for interacting with objects on the page via Selenium.
+
         public By locator { get; set; }
 
         public PageObject(By locator)

@@ -11,12 +11,16 @@ using System.Windows;
 
 namespace Farmer
 {
+
+    // this class contains the logic for setting up the web driver
+
     class SeleniumWebDriver
     {
         public static ChromeDriver SetUpChromeDriver()
         {
             try
             {
+                // several options are added to the chrome driver, including muting the audio, starting maximized, and not displaying the window if the config is set that way
                 var chromeOptions = new ChromeOptions();
                 ChromeDriverService service = ChromeDriverService.CreateDefaultService();
                 service.HideCommandPromptWindow = true;
@@ -29,9 +33,9 @@ namespace Farmer
 
                 if (ClickFarmer.getConfigValue(ObjectRepo.ShowChromeWindow).Equals("false"))
                 {
+                       // this argument stops the window from being displayed
                     chromeOptions.AddArgument("Headless");                    
                 }
-                
 
                 return new ChromeDriver(service, chromeOptions);
             }
@@ -53,7 +57,6 @@ namespace Farmer
                 operaOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 operaOptions.AddArgument("--start-maximized");
                 operaOptions.AddArgument("mute-audio");
-                //chromeOptions.BinaryLocation = @"C:\Users\Will\source\repos\ClickFarm\chrome-win\chrome.exe";
                 return new OperaDriver(service, operaOptions);
             }
             catch (Exception err)
